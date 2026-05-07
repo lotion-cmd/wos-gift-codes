@@ -1,0 +1,107 @@
+name: Update Gift Codes
+
+on:
+  schedule:
+    - cron: '0,30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch latest codes via Claude API
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          TODAY=$(TZ=Asia/Tokyo date +%Y-%m-%d)
+
+          RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
+            -H "content-type: application/json" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -d "{
+              \"model\": \"claude-haiku-4-5-20251001\",
+              \"max_tokens\": 1500,
+              \"messages\": [{
+                \"role\": \"user\",
+                \"content\": \"今日は${TODAY}（日本時間）です。Whiteout Survivalの現在アクティブなギフトコードをすべて教えてください。期限切れは除外。以下のJSON形式のみで返答（説明不要）: {\\\"codes\\\":[{\\\"code\\\":\\\"コード\\\",\\\"rewards\\\":\\\"報酬（日本語）\\\",\\\"deadline\\\":\\\"JST ISO8601またはnull\\\",\\\"note\\\":\\\"補足またはnull\\\"}]}\"
+              }]
+            }")
+
+          TEXT=$(echo "$RESPONSE" | python3 -c "
+          import sys, json
+          data = json.load(sys.stdin)
+          for block in data.get('content', []):
+              if block.get('type') == 'text':
+                  print(block['text'])
+          " 2>/dev/null || echo "")
+
+          python3 << PYEOF
+          import json, re, os
+          from datetime import datetime, timezone, timedelta
+
+          text = """$TEXT"""
+          JST = timezone(timedelta(hours=9))
+          now = datetime.now(JST)
+          today_str = now.strftime("%Y-%m-%d %H:%M JST")
+
+          parsed = None
+          for pattern in [r'\`\`\`(?:json)?\s*([\s\S]*?)\s*\`\`\`', r'\{[\s\S]*?"codes"[\s\S]*?\}']:
+              m = re.search(pattern, text)
+              if m:
+                  candidate = m.group(1) if m.lastindex else m.group(0)
+                  try:
+                      parsed = json.loads(candidate)
+                      break
+                  except:
+                      pass
+
+          if not parsed:
+              try:
+                  parsed = json.loads(text.strip())
+              except:
+                  pass
+
+          if not parsed or not isinstance(parsed.get('codes'), list) or len(parsed['codes']) == 0:
+              try:
+                  with open('codes.json', 'r') as f:
+                      existing = json.load(f)
+                  existing['updated'] = today_str
+                  with open('codes.json', 'w') as f:
+                      json.dump(existing, f, ensure_ascii=False, indent=2)
+              except:
+                  pass
+              exit(0)
+
+          valid = []
+          for c in parsed['codes']:
+              if c.get('deadline'):
+                  try:
+                      dl = datetime.fromisoformat(c['deadline'].replace('Z', '+00:00'))
+                      if dl.tzinfo is None:
+                          dl = dl.replace(tzinfo=JST)
+                      if dl <= now:
+                          continue
+                  except:
+                      pass
+              valid.append(c)
+
+          output = {"updated": today_str, "codes": valid}
+          with open('codes.json', 'w', encoding='utf-8') as f:
+              json.dump(output, f, ensure_ascii=False, indent=2)
+          print(f"Updated: {len(valid)} codes")
+          PYEOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add codes.json
+          git diff --staged --quiet || git commit -m "Update gift codes $(TZ=Asia/Tokyo date +'%Y-%m-%d %H:%M JST')"
+          git push

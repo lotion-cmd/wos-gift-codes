@@ -45,7 +45,10 @@ all_results = []
 
 # 英語攻略サイト直接フェッチ
 for url in [
+    "https://wosrewards.com/",
+    "https://whiteoutsurvival.app/gift-code/",
     "https://www.gamesradar.com/games/survival/whiteout-survival-codes-gift/",
+    "https://www.dexerto.com/codes/whiteout-survival-codes-3295120/",
     "https://www.pockettactics.com/whiteout-survival/codes",
     "https://www.mrguider.org/codes/whiteout-survival-codes-gift/",
     "https://buffbuff.com/blog/whiteout-survival-gift-codes",
@@ -53,7 +56,7 @@ for url in [
     "https://lootbar.gg/blog/en/whiteout-survival-newest-codes.html",
     "https://www.supercheats.com/whiteout-survival-codes",
     "https://techplayforge.com/whiteout-survival-gift-code/",
-    "https://www.dexerto.com/codes/whiteout-survival-codes-3295120/",
+    "https://www.eldorado.gg/blog/whiteout-survival-newest-codes/",
     "https://digitalrevenuestudio.co",
     "https://www.whiteoutsurvival.wiki/giftcodes/",
 ]:

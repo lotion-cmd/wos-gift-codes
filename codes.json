@@ -1,0 +1,29 @@
+{
+  "updated": "2026-05-07 JST",
+  "codes": [
+    {
+      "code": "FE5BY8",
+      "rewards": "ジェム×1000、ミシック遠征マニュアル×2、ミシック探索マニュアル×2、ヒーローXP×50K、トレーニング加速(1h)×3",
+      "deadline": null,
+      "note": "炉レベル9以上が必要"
+    },
+    {
+      "code": "ChildrensDay505",
+      "rewards": "ジェム×1000、トレーニング加速(1h)×8、肉×50K、木材×50K、石炭×10K、鉄×5K、VIP XP×200、汎用加速(5m)×10",
+      "deadline": null,
+      "note": null
+    },
+    {
+      "code": "OFFICIALSTORE",
+      "rewards": "ジェム×1000、ミシック遠征マニュアル×2、ミシック探索マニュアル×2、ヒーローXP×50K、トレーニング加速(1h)×3",
+      "deadline": null,
+      "note": "炉レベル9以上が必要"
+    },
+    {
+      "code": "gogoWOS",
+      "rewards": "ジェム×500、ヒーローXP×10K、ゴールドキー×2、汎用加速(5m)×20",
+      "deadline": null,
+      "note": null
+    }
+  ]
+}

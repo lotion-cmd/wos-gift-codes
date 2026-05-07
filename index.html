@@ -10,7 +10,7 @@
     :root {
       --bg: #04080f; --surface: #0b1420; --border: #162030;
       --ice: #7dd3fc; --ice2: #bae6fd; --frost: #38bdf8;
-      --gold: #fbbf24; --red: #f87171; --green: #4ade80;
+      --gold: #fbbf24; --green: #4ade80;
       --amber: #fb923c; --text: #dde8f4; --muted: #4a6880;
     }
     body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; overflow-x: hidden; }
@@ -92,7 +92,7 @@
         <span class="badge badge-live">未確認・速報</span>
       </div>
       <p class="reddit-warn">r/whiteoutsurvival の新着ギフトコード投稿です。確認済みコードに反映されるまでの速報としてご利用ください。</p>
-      <div class="reddit-list" id="reddit-list"><p class="empty">読み込み中...</p></div>
+      <div class="reddit-list" id="reddit-list"></div>
     </main>
   </div>
 
@@ -112,6 +112,22 @@
       if (diff < 3600) return `${Math.floor(diff/60)}分前`;
       if (diff < 86400) return `${Math.floor(diff/3600)}時間前`;
       return `${Math.floor(diff/86400)}日前`;
+    }
+
+    function renderReddit(posts) {
+      const el = document.getElementById('reddit-list');
+      if (!posts || posts.length === 0) {
+        el.innerHTML = '<p class="empty">現在、新着のReddit投稿はありません</p>';
+        return;
+      }
+      el.innerHTML = posts.map((p, i) => `
+        <div class="reddit-card" style="animation-delay:${i*0.05}s">
+          <div class="reddit-title">${p.title}</div>
+          <div class="reddit-meta">
+            <a class="reddit-link" href="${p.url}" target="_blank" rel="noopener noreferrer">Redditで見る →</a>
+            <span class="reddit-time">${timeAgo(p.created)}</span>
+          </div>
+        </div>`).join('');
     }
 
     async function loadCodes() {
@@ -140,76 +156,27 @@
       }
     }
 
-    async function loadReddit() {
-      const el = document.getElementById('reddit-list');
+    // ダミーデータを即座に表示（デザイン確認用）
+    const DUMMY_POSTS = [
+      {
+        title: "New gift code just dropped",
+        url: "https://www.reddit.com/r/whiteoutsurvival/comments/1t58pgm/new_gift_code_just_dropped/",
+        created: Math.floor(Date.now() / 1000) - 300,
+      },
+      {
+        title: "New gift code FE5BY8",
+        url: "https://www.reddit.com/r/whiteoutsurvival/comments/1t55ksl/new_gift_code_fe5by8/",
+        created: Math.floor(Date.now() / 1000) - 3600,
+      },
+      {
+        title: "Gift code just dropped - GW2026JP",
+        url: "https://www.reddit.com/r/whiteoutsurvival/comments/1szvgt4/gift_code_just_dropped_gw2026jp/",
+        created: Math.floor(Date.now() / 1000) - 86400,
+      },
+    ];
 
-      // ── テスト用ダミーデータ ──────────────────────────────────
-      // 実際の表示イメージ確認用。動作確認後に削除してください。
-      const DUMMY = [
-        {
-          title: "New gift code just dropped",
-          url: "https://www.reddit.com/r/whiteoutsurvival/comments/1t58pgm/new_gift_code_just_dropped/",
-          created: Math.floor(Date.now() / 1000) - 300,
-        },
-        {
-          title: "New gift code FE5BY8",
-          url: "https://www.reddit.com/r/whiteoutsurvival/comments/1t55ksl/new_gift_code_fe5by8/",
-          created: Math.floor(Date.now() / 1000) - 3600,
-        },
-        {
-          title: "Gift code just dropped - GW2026JP",
-          url: "https://www.reddit.com/r/whiteoutsurvival/comments/1szvgt4/gift_code_just_dropped_gw2026jp/",
-          created: Math.floor(Date.now() / 1000) - 86400,
-        },
-      ];
-      // ── ここまでダミーデータ ──────────────────────────────────
-
-      const KEYWORDS = ['gift code', 'giftcode', 'new code', 'code dropped', 'code just'];
-      const targets = [
-        'https://www.reddit.com/r/whiteoutsurvival/search.json?q=gift+code+dropped&sort=new&restrict_sr=1&limit=10',
-        'https://www.reddit.com/r/whiteoutsurvival/search.json?q=new+gift+code&sort=new&restrict_sr=1&limit=10',
-      ];
-      const allPosts = [];
-      const seenIds = new Set();
-
-      for (const url of targets) {
-        try {
-          const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-          const res = await fetch(proxy, { signal: AbortSignal.timeout(10000) });
-          const wrapper = await res.json();
-          const data = JSON.parse(wrapper.contents);
-          const posts = data?.data?.children || [];
-          for (const post of posts) {
-            const d = post.data;
-            const title = (d.title || '').toLowerCase();
-            if (seenIds.has(d.id)) continue;
-            if (KEYWORDS.some(k => title.includes(k))) {
-              seenIds.add(d.id);
-              allPosts.push({
-                title: d.title,
-                url: 'https://www.reddit.com' + d.permalink,
-                created: d.created_utc,
-              });
-            }
-          }
-        } catch(e) {
-          console.warn('Reddit fetch error:', e);
-        }
-      }
-
-      // 実際のデータが取れなければダミーデータを表示
-      const posts = allPosts.length > 0 ? allPosts : DUMMY;
-      posts.sort((a, b) => b.created - a.created);
-
-      el.innerHTML = posts.slice(0, 8).map((p, i) => `
-        <div class="reddit-card" style="animation-delay:${i*0.05}s">
-          <div class="reddit-title">${p.title}</div>
-          <div class="reddit-meta">
-            <a class="reddit-link" href="${p.url}" target="_blank" rel="noopener noreferrer">Redditで見る →</a>
-            <span class="reddit-time">${timeAgo(p.created)}</span>
-          </div>
-        </div>`).join('');
-    }
+    // ダミーをすぐ表示
+    renderReddit(DUMMY_POSTS);
 
     function copy(btn, code) {
       navigator.clipboard.writeText(code).then(() => {
@@ -220,7 +187,6 @@
     }
 
     loadCodes();
-    loadReddit();
   </script>
 </body>
 </html>

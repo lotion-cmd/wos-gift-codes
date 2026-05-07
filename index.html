@@ -14,46 +14,31 @@
       --amber: #fb923c; --text: #dde8f4; --muted: #4a6880;
     }
     body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; overflow-x: hidden; }
-
-    /* Snow */
     .snow { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
     .flake { position: absolute; top: -16px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e0f2fe, #7dd3fc33); animation: fall linear infinite; }
     @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-
     .app { position: relative; z-index: 1; min-height: 100vh; background: radial-gradient(ellipse at 50% -6%, rgba(56,189,248,.1) 0%, transparent 50%); }
-
-    /* Header */
     .header { text-align: center; padding: 48px 20px 20px; }
     .header::after { content: ''; display: block; width: 160px; height: 1px; background: linear-gradient(90deg, transparent, var(--frost), transparent); margin: 16px auto 0; }
     .game-name { font-size: .6rem; letter-spacing: .44em; text-transform: uppercase; color: var(--frost); margin-bottom: 8px; opacity: .6; }
     .title { font-family: 'Cinzel', serif; font-size: clamp(1.6rem, 4.5vw, 2.8rem); font-weight: 900; color: var(--ice2); text-shadow: 0 0 30px rgba(125,211,252,.45); }
     .title em { color: var(--gold); font-style: normal; }
-
-    /* Meta */
     .meta { text-align: center; margin-bottom: 10px; font-size: .68rem; color: var(--muted); }
     .meta span { color: var(--ice); }
-
-    /* Redeem */
     .redeem { text-align: center; margin-bottom: 28px; }
     .redeem a { display: inline-flex; align-items: center; gap: 6px; background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.3); color: var(--gold); font-size: .76rem; padding: 7px 18px; border-radius: 5px; text-decoration: none; transition: all .2s; }
     .redeem a:hover { background: rgba(251,191,36,.18); }
-
-    /* Section */
     .main { max-width: 940px; margin: 0 auto; padding: 0 20px 64px; }
-    .section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
-    .section-title h2 { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: .08em; }
-    .section-title .badge { font-size: .62rem; padding: 2px 8px; border-radius: 3px; letter-spacing: .08em; }
-    .badge-confirmed { background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.3); color: var(--green); }
-    .badge-reddit { background: rgba(251,146,60,.12); border: 1px solid rgba(251,146,60,.3); color: var(--amber); animation: pulse 2s infinite; }
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .section-head h2 { font-family: 'Cinzel', serif; font-size: .95rem; letter-spacing: .08em; }
+    .badge { font-size: .6rem; padding: 2px 8px; border-radius: 3px; letter-spacing: .08em; }
+    .badge-ok { background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.3); color: var(--green); }
+    .badge-live { background: rgba(251,146,60,.12); border: 1px solid rgba(251,146,60,.3); color: var(--amber); animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
     .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 36px 0 28px; }
-
-    /* Confirmed codes grid */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(282px, 1fr)); gap: 14px; margin-bottom: 8px; }
     .count { font-size: .74rem; color: var(--muted); margin-bottom: 16px; }
     .count strong { color: var(--ice); }
-
-    /* Code card */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(282px, 1fr)); gap: 14px; }
     .card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; animation: up .42s ease both; transition: border-color .22s, transform .18s; }
     .card:hover { border-color: rgba(56,189,248,.3); transform: translateY(-3px); }
     .card-top { position: absolute; inset: 0 0 auto 0; height: 1px; background: linear-gradient(90deg, transparent, var(--frost), transparent); opacity: 0; transition: opacity .3s; }
@@ -67,17 +52,17 @@
     .copy-btn.ok { background: rgba(74,222,128,.12); border-color: rgba(74,222,128,.32); color: var(--green); }
     .rewards { font-size: .79rem; color: var(--gold); margin-bottom: 8px; line-height: 1.6; }
     .note { font-size: .7rem; color: var(--muted); line-height: 1.5; }
-
-    /* Reddit alerts */
     .reddit-list { display: flex; flex-direction: column; gap: 10px; }
     .reddit-card { background: var(--surface); border: 1px solid rgba(251,146,60,.2); border-radius: 8px; padding: 14px 16px; animation: up .4s ease both; transition: border-color .2s; }
     .reddit-card:hover { border-color: rgba(251,146,60,.4); }
     .reddit-title { font-size: .85rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-    .reddit-body { font-size: .76rem; color: var(--muted); line-height: 1.5; margin-bottom: 8px; }
+    .reddit-meta { display: flex; align-items: center; gap: 10px; }
     .reddit-link { font-size: .72rem; color: var(--amber); text-decoration: none; }
     .reddit-link:hover { text-decoration: underline; }
-    .reddit-time { font-size: .68rem; color: var(--muted); margin-left: 12px; }
+    .reddit-time { font-size: .68rem; color: var(--muted); }
+    .reddit-warn { font-size: .72rem; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
     .empty { text-align: center; padding: 30px; color: var(--muted); font-size: .8rem; }
+    @media(max-width:500px){ .title{font-size:1.5rem} .grid{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
@@ -94,9 +79,9 @@
 
     <main class="main">
       <!-- 確認済みコード -->
-      <div class="section-title">
+      <div class="section-head">
         <h2>✅ 確認済みアクティブコード</h2>
-        <span class="badge badge-confirmed">複数ソース検証済み</span>
+        <span class="badge badge-ok">複数ソース検証済み</span>
       </div>
       <p class="count" id="count"></p>
       <div class="grid" id="grid"><p class="empty">読み込み中...</p></div>
@@ -104,11 +89,11 @@
       <div class="divider"></div>
 
       <!-- Reddit速報 -->
-      <div class="section-title">
+      <div class="section-head">
         <h2>🔴 Reddit 速報</h2>
-        <span class="badge badge-reddit">精査中・未確認</span>
+        <span class="badge badge-live">未確認・速報</span>
       </div>
-      <p style="font-size:.74rem;color:var(--muted);margin-bottom:14px;">r/whiteoutsurvival の新着ギフトコード投稿です。内容は未確認のため自己責任でご利用ください。</p>
+      <p class="reddit-warn">r/whiteoutsurvival の新着ギフトコード投稿です。確認済みコードに反映されるまでの速報としてご利用ください。</p>
       <div class="reddit-list" id="reddit-list"><p class="empty">読み込み中...</p></div>
     </main>
   </div>
@@ -124,28 +109,25 @@
       snow.appendChild(f);
     }
 
-    function timeAgo(utc) {
-      const diff = Math.floor((Date.now() / 1000) - utc);
+    function timeAgo(dateStr) {
+      const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
       if (diff < 60) return `${diff}秒前`;
       if (diff < 3600) return `${Math.floor(diff/60)}分前`;
       if (diff < 86400) return `${Math.floor(diff/3600)}時間前`;
       return `${Math.floor(diff/86400)}日前`;
     }
 
-    async function load() {
+    // 確認済みコード読み込み
+    async function loadCodes() {
       try {
         const res = await fetch('codes.json?t=' + Date.now());
         const data = await res.json();
-
         document.getElementById('updated').textContent = data.updated || '-';
-
-        // 確認済みコード
         const codes = (data.codes || []).filter(c => !c.deadline || new Date(c.deadline).getTime() > Date.now());
         document.getElementById('count').innerHTML = `現在 <strong>${codes.length}件</strong> のアクティブコード`;
-        if (codes.length === 0) {
-          document.getElementById('grid').innerHTML = '<p class="empty">🧊 現在有効なコードはありません</p>';
-        } else {
-          document.getElementById('grid').innerHTML = codes.map((c, i) => `
+        document.getElementById('grid').innerHTML = codes.length === 0
+          ? '<p class="empty">🧊 現在有効なコードはありません</p>'
+          : codes.map((c, i) => `
             <div class="card" style="animation-delay:${i*0.07}s">
               <div class="card-top"></div>
               <div class="card-body">
@@ -156,27 +138,67 @@
                 <p class="rewards">${c.rewards || '報酬情報を確認してください'}</p>
                 ${c.note ? `<p class="note">📌 ${c.note}</p>` : ''}
               </div>
-            </div>
-          `).join('');
-        }
-
-        // Reddit速報
-        const alerts = data.reddit_alerts || [];
-        if (alerts.length === 0) {
-          document.getElementById('reddit-list').innerHTML = '<p class="empty">現在、新着のReddit投稿はありません</p>';
-        } else {
-          document.getElementById('reddit-list').innerHTML = alerts.map((a, i) => `
-            <div class="reddit-card" style="animation-delay:${i*0.05}s">
-              <div class="reddit-title">${a.title}</div>
-              ${a.body ? `<div class="reddit-body">${a.body}</div>` : ''}
-              <a class="reddit-link" href="${a.url}" target="_blank" rel="noopener noreferrer">Redditで見る →</a>
-              ${a.created ? `<span class="reddit-time">${timeAgo(a.created)}</span>` : ''}
-            </div>
-          `).join('');
-        }
+            </div>`).join('');
       } catch(e) {
         document.getElementById('grid').innerHTML = '<p class="empty">データを読み込めませんでした</p>';
       }
+    }
+
+    // Reddit速報をブラウザから直接取得（CORSプロキシ経由）
+    async function loadReddit() {
+      const el = document.getElementById('reddit-list');
+      const KEYWORDS = ['gift code', 'giftcode', 'new code', 'code dropped', 'code just'];
+
+      // CORSプロキシ経由でReddit JSONを取得
+      const targets = [
+        'https://www.reddit.com/r/whiteoutsurvival/search.json?q=gift+code+dropped&sort=new&restrict_sr=1&limit=10',
+        'https://www.reddit.com/r/whiteoutsurvival/search.json?q=new+gift+code&sort=new&restrict_sr=1&limit=10',
+      ];
+
+      const allPosts = [];
+      const seenIds = new Set();
+
+      for (const url of targets) {
+        try {
+          // allorigins.win はCORSプロキシとして動作する無料サービス
+          const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+          const res = await fetch(proxy, { signal: AbortSignal.timeout(10000) });
+          const wrapper = await res.json();
+          const data = JSON.parse(wrapper.contents);
+          const posts = data?.data?.children || [];
+          for (const post of posts) {
+            const d = post.data;
+            const title = (d.title || '').toLowerCase();
+            if (seenIds.has(d.id)) continue;
+            if (KEYWORDS.some(k => title.includes(k))) {
+              seenIds.add(d.id);
+              allPosts.push({
+                id: d.id,
+                title: d.title,
+                url: 'https://www.reddit.com' + d.permalink,
+                created: d.created_utc,
+              });
+            }
+          }
+        } catch(e) {
+          console.warn('Reddit fetch error:', e);
+        }
+      }
+
+      if (allPosts.length === 0) {
+        el.innerHTML = '<p class="empty">現在、新着のReddit投稿はありません</p>';
+        return;
+      }
+
+      allPosts.sort((a, b) => b.created - a.created);
+      el.innerHTML = allPosts.slice(0, 8).map((p, i) => `
+        <div class="reddit-card" style="animation-delay:${i*0.05}s">
+          <div class="reddit-title">${p.title}</div>
+          <div class="reddit-meta">
+            <a class="reddit-link" href="${p.url}" target="_blank" rel="noopener noreferrer">Redditで見る →</a>
+            <span class="reddit-time">${timeAgo(p.created * 1000)}</span>
+          </div>
+        </div>`).join('');
     }
 
     function copy(btn, code) {
@@ -187,7 +209,8 @@
       });
     }
 
-    load();
+    loadCodes();
+    loadReddit();
   </script>
 </body>
 </html>

@@ -1,119 +1,34 @@
 {
-  "updated": "2026-05-07 15:55 JST",
+  "updated": "2026-05-07 16:11 JST",
   "codes": [
     {
-      "code": "Codes",
+      "code": "FE5BY8",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
-      "note": null
-    },
-    {
-      "code": "gogoWOS",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "OFFICIALSTORE",
-      "rewards": "ジェム×1000、ミシック遠征マニュアル×2、ミシック探索マニュアル×2、ヒーローXP×50K、トレーニング加速(1h)×3",
-      "deadline": null,
-      "note": "10ソース確認済み: buffbuff, dexerto, eldorado, gamesradar, gamsgo, lootbar, pockettactics, wiki, wosapp, wosrewards"
-    },
-    {
-      "code": "Manuals",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Mythic",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Stamina",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Raiders",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Training",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Policy",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Speedup",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Rewards",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
+      "note": null,
+      "verified": true
     },
     {
       "code": "ChildrensDay505",
       "rewards": "ジェム×1000、トレーニング加速(1h)×8、肉×50K、木材×50K、石炭×10K、鉄×5K、VIP XP×200、汎用加速(5m)×10",
       "deadline": null,
-      "note": "4ソース確認済み: dexerto, gamesradar, wosapp, wosrewards"
+      "note": "4ソース確認済み: dexerto, gamesradar, wosapp, wosrewards",
+      "verified": true
     },
     {
-      "code": "Charm",
-      "rewards": "報酬情報を確認してください",
+      "code": "OFFICIALSTORE",
+      "rewards": "ジェム×1000、ミシック遠征マニュアル×2、ミシック探索マニュアル×2、ヒーローXP×50K、トレーニング加速(1h)×3",
       "deadline": null,
-      "note": null
+      "note": "10ソース確認済み: buffbuff, dexerto, eldorado, gamesradar, gamsgo, lootbar, pockettactics, wiki, wosapp, wosrewards",
+      "verified": true
     },
     {
-      "code": "Player",
+      "code": "gogoWOS",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
-      "note": null
-    },
-    {
-      "code": "These",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Avatar",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Confirm",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Newest",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
-    },
-    {
-      "code": "Service",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null
+      "note": null,
+      "verified": true
     }
-  ]
+  ],
+  "reddit_alerts": []
 }

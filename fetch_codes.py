@@ -43,6 +43,28 @@ def fetch_rss(url):
 
 all_results = []
 
+# Reddit r/whiteoutsurvival 新着投稿（APIキー不要）
+reddit_urls = [
+    "https://www.reddit.com/r/whiteoutsurvival/search.json?q=gift+code&sort=new&restrict_sr=1&limit=10",
+    "https://www.reddit.com/r/whiteoutsurvival/new.json?limit=25",
+]
+for url in reddit_urls:
+    try:
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 WOSCodeTracker/1.0 (personal use)"
+        })
+        with urllib.request.urlopen(req, timeout=15) as r:
+            data = json.loads(r.read().decode("utf-8"))
+            posts = data.get("data", {}).get("children", [])
+            for post in posts:
+                d = post.get("data", {})
+                title = d.get("title", "")
+                body = d.get("selftext", "")
+                if any(w in title.lower() + body.lower() for w in ["gift code", "giftcode", "code"]):
+                    all_results.append(f"{title} {body[:200]}")
+    except Exception as e:
+        pass
+
 # 英語攻略サイト直接フェッチ
 for url in [
     "https://wosrewards.com/",

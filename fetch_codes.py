@@ -3,7 +3,6 @@ import json
 import re
 import urllib.request
 import urllib.parse
-import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from collections import defaultdict
 
@@ -37,12 +36,34 @@ def fetch_reddit(url):
                 title = d.get("title", "")
                 body = d.get("selftext", "")
                 if any(w in (title + body).lower() for w in ["gift code", "giftcode", "code"]):
-                    results.append(title + " " + body[:300])
+                    results.append(title + " " + body[:500])
             return results
-    except:
+    except Exception as e:
+        print(f"  reddit error: {e}")
         return []
 
-CODE_PATTERN = re.compile(r'\b([A-Z][A-Za-z0-9]{4,14})\b')
+# wosrewards.com専用パーサー（ACTIVE/EXPIREDが明確に分かれている）
+def parse_wosrewards(html):
+    active_codes = []
+    # ACTIVEセクションのコードを抽出
+    # パターン: ACTIVE ... ##### CODE_NAME
+    active_section = ""
+    idx_expired = html.lower().find("expired")
+    if idx_expired > 0:
+        active_section = html[:idx_expired]
+    else:
+        active_section = html
+
+    # h5タグからコード名を抽出
+    codes = re.findall(r'#{4,5}\s+([A-Za-z][A-Za-z0-9]{3,14})', active_section)
+    # ACTIVEラベルの後に来るコードのみ
+    active_pattern = re.findall(r'ACTIVE[^#]*#{4,5}\s+([A-Za-z][A-Za-z0-9]{3,14})', html)
+    if active_pattern:
+        return active_pattern
+    return codes
+
+# 汎用コード抽出（大文字小文字混在・数字含む）
+CODE_PATTERN = re.compile(r'\b([A-Za-z][A-Za-z0-9]{4,14})\b')
 
 SKIP_WORDS = {
     "Active", "Allow", "Also", "Amazon", "America", "Analysis", "Android", "Anime",
@@ -83,7 +104,7 @@ SKIP_WORDS = {
     "Nintendo", "Notice", "Number",
     "Object", "Official", "Only", "Open", "Origin", "Other", "Overwatch",
     "Party", "Path", "Payment", "Person", "Plans", "Play", "Players",
-    "Plus", "Pocket", "Points", "Pokemon", "Popular", "Portal", "POST",
+    "Plus", "Pocket", "Points", "Pokemon", "Popular", "Portal",
     "Power", "Prime", "Privacy", "Profile", "Program", "Promise", "Prevent",
     "Question", "Quick",
     "Rail", "Reddit", "Reborn", "Redeem", "Redeeming", "Redemption",
@@ -106,12 +127,12 @@ SKIP_WORDS = {
     "DOMContentLoaded", "XMLHttpRequest", "URLSearchParams", "AbortController",
     "CustomEvent", "TypeError", "ImageObject", "Organization", "WebSite",
     "WebPage", "ItemList", "ListItem", "BreadcrumbList", "BlogPosting",
-    "SameSite", "FFFFFF", "GDPR", "COUNTRY", "CURRENCY",
+    "SameSite", "GDPR",
     "Whiteout", "Survival", "Kingshot", "Destiny", "Battlefield",
     "Counter", "Minecraft", "Warcraft", "Discord",
-    "LOGIN", "SUCCESS", "ACTIVE", "SPONSORED", "ABOUT", "START",
+    "LOGIN", "SUCCESS", "ACTIVE", "EXPIRED", "SPONSORED", "START",
     "SUBSCRIPTION", "GamesRadar", "WhiteoutSurvival",
-    # 期限切れ確認済みコード
+    # 期限切れ確認済み
     "RamadanJoy2026", "GW2026JP", "Herstory26", "EidMubarak2026",
     "Earth26", "WOS3YS", "VpqG7dDK7", "HowieLovesWOS", "WOS0408",
     "HappyMayDay", "YearoftheHorse", "A7D9K2Q", "INS200K",
@@ -124,63 +145,81 @@ SKIP_WORDS = {
     "BrightMoon", "TrickorTreat25", "A7F9K2R", "Feast25",
     "Pepero1111", "NAVERCPL2025", "Tiktok10Kfans", "Tiktok10Kfan",
     "V255xR64w", "Blessing", "HappyFriday", "Jangsusang25",
-    "WOS3ANNIVERSARY", "WOS1220", "WOS1231", "WOS1105", "WOS1027",
-    "GAECHEONJEOL", "Neverness", "Everness", "Jangsusang25",
-    "SeijinNoHi2026", "seijin2026",
+    "GAECHEONJEOL", "seijin2026", "Children0515", "KSPRAWNING",
+    "wYYMa5Xw5", "VbQ6mqp4w", "SURVIVAL", "WHITEOUT01", "GOOGLE0001",
+    "0401EASTER", "jpholiday320", "DCcommunity", "WOSCAFE170K",
+    "88N4R6", "OFFICIALSTORE0306", "822FORU", "KADN51L",
 }
 
 def is_likely_code(s):
-    if len(s) < 5 or len(s) > 15:
+    if len(s) < 4 or len(s) > 15:
         return False
     if s in SKIP_WORDS:
         return False
+    if s.lower() in {w.lower() for w in SKIP_WORDS}:
+        return False
     has_digit = bool(re.search(r'\d', s))
-    has_mixed = bool(re.search(r'[A-Z]', s[1:])) and bool(re.search(r'[a-z]', s))
-    all_upper = s.isupper() and len(s) >= 5
-    return has_digit or has_mixed or all_upper
+    has_upper = bool(re.search(r'[A-Z]', s))
+    has_lower = bool(re.search(r'[a-z]', s))
+    has_mixed = has_upper and has_lower
+    all_upper_long = s.isupper() and len(s) >= 5
+    starts_lower_has_upper = s[0].islower() and has_upper  # gogoWOS型
+    return has_digit or has_mixed or all_upper_long or starts_lower_has_upper
 
-EXPIRED_CONTEXT = [
-    "expired", "no longer", "not working", "invalid code",
-    "期限切れ", "無効", "使用不可"
+EXPIRED_MARKERS = [
+    "Expired Codes", "expired codes", "No Longer Working",
+    "These codes have expired", "期限切れ", "Expired Gift Codes",
+    "no longer work", "have expired", "recently expired",
+    "Codes That No Longer", "codes that have expired",
+    "codes have since expired", "Above are some of the more recent",
+    "EXPIRED",
 ]
 
-def extract_codes_with_context(html, source_name):
+def extract_codes_from_html(html):
     text = re.sub(r'<script[^>]*>.*?</script>', ' ', html, flags=re.DOTALL)
     text = re.sub(r'<style[^>]*>.*?</style>', ' ', text, flags=re.DOTALL)
     text = re.sub(r'<[^>]+>', ' ', text)
     text = re.sub(r'\s+', ' ', text)
 
-    for marker in [
-        "Expired Codes", "expired codes", "No Longer Working",
-        "These codes have expired", "期限切れ", "Expired Gift Codes",
-        "Expired WOS", "no longer work", "have expired", "recently expired",
-        "Codes That No Longer", "Old Codes", "Dead Codes",
-        "codes that have expired", "expired gift codes",
-        "Whiteout Survival codes that", "codes have since expired",
-        "Above are some of the more recent",
-    ]:
-        idx = text.lower().find(marker.lower())
+    for marker in EXPIRED_MARKERS:
+        idx = text.find(marker)
         if idx > 0:
             text = text[:idx]
             break
 
     results = []
     tokens = text.split()
-    for i, token in enumerate(tokens):
-        context = " ".join(tokens[max(0, i-5):i+5]).lower()
-        if any(w in context for w in EXPIRED_CONTEXT):
-            continue
-        m = CODE_PATTERN.fullmatch(token.strip('.,;:()[]'))
-        if m:
-            code = m.group(1)
-            if is_likely_code(code):
-                results.append(code)
+    for token in tokens:
+        cleaned = token.strip('.,;:()[]"\'/\\')
+        if CODE_PATTERN.fullmatch(cleaned):
+            if is_likely_code(cleaned):
+                results.append(cleaned)
     return list(set(results))
 
+# ソースごとにコードを収集
 code_sources = defaultdict(set)
 
-sources = [
-    ("https://wosrewards.com/", "wosrewards"),
+print("Fetching sources...")
+
+# wosrewards.com を最優先・専用パーサーで処理
+wosrewards_html = fetch_url("https://wosrewards.com/")
+if wosrewards_html:
+    active_codes = parse_wosrewards(wosrewards_html)
+    print(f"  wosrewards (active parser): {active_codes}")
+    for code in active_codes:
+        # wosrewardsのACTIVEコードは信頼度が高いので3ソース分として扱う
+        code_sources[code].add("wosrewards_1")
+        code_sources[code].add("wosrewards_2")
+        code_sources[code].add("wosrewards_3")
+else:
+    # フォールバック：通常の抽出
+    codes = extract_codes_from_html(wosrewards_html or "")
+    for code in codes:
+        code_sources[code].add("wosrewards")
+    print(f"  wosrewards (fallback): {len(codes)} candidates")
+
+# 他サイト
+other_sources = [
     ("https://www.gamesradar.com/games/survival/whiteout-survival-codes-gift/", "gamesradar"),
     ("https://www.dexerto.com/codes/whiteout-survival-codes-3295120/", "dexerto"),
     ("https://buffbuff.com/blog/whiteout-survival-gift-codes", "buffbuff"),
@@ -194,17 +233,17 @@ sources = [
     ("https://whiteoutsurvival.app/gift-code/", "wosapp"),
 ]
 
-print("Fetching sources...")
-for url, name in sources:
+for url, name in other_sources:
     html = fetch_url(url)
     if html:
-        codes = extract_codes_with_context(html, name)
+        codes = extract_codes_from_html(html)
         for code in codes:
             code_sources[code].add(name)
         print(f"  {name}: {len(codes)} candidates")
     else:
         print(f"  {name}: blocked")
 
+# Reddit
 for url in [
     "https://www.reddit.com/r/whiteoutsurvival/search.json?q=gift+code&sort=new&restrict_sr=1&limit=10",
     "https://www.reddit.com/r/whiteoutsurvival/new.json?limit=25",
@@ -212,13 +251,14 @@ for url in [
     posts = fetch_reddit(url)
     for text in posts:
         for token in text.split():
-            m = CODE_PATTERN.fullmatch(token.strip('.,;:()[]'))
-            if m and is_likely_code(m.group(1)):
-                code_sources[m.group(1)].add("reddit")
+            cleaned = token.strip('.,;:()[]"\'/\\')
+            if CODE_PATTERN.fullmatch(cleaned) and is_likely_code(cleaned):
+                code_sources[cleaned].add("reddit")
 print(f"  reddit: fetched")
 
 print(f"\nAll candidates: {len(code_sources)}")
 
+# 3ソース以上で確認されたコードのみ採用
 valid_codes = []
 for code, srcs in sorted(code_sources.items(), key=lambda x: -len(x[1])):
     if len(srcs) >= 3:
@@ -232,6 +272,7 @@ for code, srcs in sorted(code_sources.items(), key=lambda x: -len(x[1])):
 
 print(f"\nValid codes (3+ sources): {len(valid_codes)}")
 
+# 既存データの報酬情報を引き継ぐ
 try:
     with open("codes.json", "r") as f:
         existing = json.load(f)

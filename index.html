@@ -24,10 +24,10 @@
     .game-name { font-size: .6rem; letter-spacing: .44em; text-transform: uppercase; color: var(--frost); margin-bottom: 8px; opacity: .6; }
     .title { font-family: 'Cinzel', serif; font-size: clamp(1.6rem, 4.5vw, 2.8rem); font-weight: 900; color: var(--ice2); text-shadow: 0 0 30px rgba(125,211,252,.45); }
     .title em { color: var(--gold); font-style: normal; }
-    .meta { text-align: center; margin-bottom: 6px; font-size: .68rem; color: var(--muted); }
+    .meta { text-align: center; margin-bottom: 4px; font-size: .68rem; color: var(--muted); }
     .meta span { color: var(--ice); }
-    .counter { text-align: center; margin-bottom: 10px; font-size: .65rem; color: var(--muted); }
-    .counter span { color: var(--muted); }
+    .counter { text-align: center; margin-bottom: 12px; font-size: .62rem; color: #2a3a4a; }
+    .counter span { color: #2a3a4a; }
     .notify-btn { display: block; margin: 0 auto 16px; background: rgba(56,189,248,.08); border: 1px solid rgba(56,189,248,.25); color: var(--frost); font-family: 'Noto Sans JP', sans-serif; font-size: .76rem; padding: 7px 18px; border-radius: 5px; cursor: pointer; transition: all .2s; }
     .notify-btn:hover { background: rgba(56,189,248,.16); }
     .notify-btn.granted { background: rgba(74,222,128,.1); border-color: rgba(74,222,128,.3); color: var(--green); cursor: default; }
@@ -81,7 +81,7 @@
       <h1 class="title">GIFT <em>CODE</em> TRACKER</h1>
     </header>
     <p class="meta">最終更新: <span id="updated">-</span></p>
-    <p class="counter">👁 アクセス数: <span id="counter">-</span></p>
+    <p class="counter">👁 <span id="counter">-</span></p>
     <button class="notify-btn" id="notify-btn" onclick="requestNotify()">🔔 新コード通知をオンにする</button>
     <div class="redeem">
       <a href="https://wos-giftcode.centurygame.com" target="_blank" rel="noopener noreferrer">🎁 コード交換所を開く</a>
@@ -107,6 +107,8 @@
   </div>
 
   <script>
+    const PROXY = 'https://wos-reddit-proxy.adrian-j-slywotzky.workers.dev';
+
     // Snow
     const snow = document.getElementById('snow');
     for (let i = 0; i < 22; i++) {
@@ -117,13 +119,17 @@
       snow.appendChild(f);
     }
 
-    // アクセスカウンター（GoatCounter）
-    (function() {
-      const key = 'wos_visit_count';
-      let count = parseInt(localStorage.getItem(key) || '0') + 1;
-      localStorage.setItem(key, count);
-      document.getElementById('counter').textContent = count.toLocaleString('ja-JP') + ' 回（このデバイス）';
-    })();
+    // アクセスカウンター（Cloudflare KV）
+    async function loadCounter() {
+      try {
+        const res = await fetch(`${PROXY}/count`);
+        const data = await res.json();
+        document.getElementById('counter').textContent =
+          data.count.toLocaleString('ja-JP') + ' アクセス';
+      } catch(e) {
+        document.getElementById('counter').textContent = '';
+      }
+    }
 
     function timeAgo(utc) {
       const diff = Math.floor((Date.now() / 1000) - utc);
@@ -135,8 +141,7 @@
 
     function isNew(addedAt) {
       if (!addedAt) return false;
-      const added = new Date(addedAt).getTime();
-      return (Date.now() - added) < 48 * 60 * 60 * 1000;
+      return (Date.now() - new Date(addedAt).getTime()) < 48 * 60 * 60 * 1000;
     }
 
     // 通知
@@ -179,17 +184,17 @@
         const res = await fetch('codes.json?t=' + Date.now());
         const data = await res.json();
         document.getElementById('updated').textContent = data.updated || '-';
-        const codes = (data.codes || []).filter(c => !c.deadline || new Date(c.deadline).getTime() > Date.now());
-
-        // 新コード検出・通知
+        const codes = (data.codes || []).filter(c =>
+          !c.deadline || new Date(c.deadline).getTime() > Date.now()
+        );
         if (prevCodes !== null) {
           const prevKeys = new Set(prevCodes.map(c => c.code));
           const newCodes = codes.filter(c => !prevKeys.has(c.code));
           if (newCodes.length > 0) sendNotify(newCodes);
         }
         prevCodes = codes;
-
-        document.getElementById('count').innerHTML = `現在 <strong>${codes.length}件</strong> のアクティブコード`;
+        document.getElementById('count').innerHTML =
+          `現在 <strong>${codes.length}件</strong> のアクティブコード`;
         document.getElementById('grid').innerHTML = codes.length === 0
           ? '<p class="empty">🧊 現在有効なコードはありません</p>'
           : codes.map((c, i) => `
@@ -205,17 +210,15 @@
               </div>
             </div>`).join('');
       } catch(e) {
-        document.getElementById('grid').innerHTML = '<p class="empty">データを読み込めませんでした</p>';
+        document.getElementById('grid').innerHTML =
+          '<p class="empty">データを読み込めませんでした</p>';
       }
     }
 
     async function loadReddit() {
       const el = document.getElementById('reddit-list');
       try {
-        const res = await fetch(
-          'https://wos-reddit-proxy.adrian-j-slywotzky.workers.dev',
-          { signal: AbortSignal.timeout(10000) }
-        );
+        const res = await fetch(PROXY, { signal: AbortSignal.timeout(10000) });
         if (!res.ok) throw new Error('fetch failed');
         const data = await res.json();
         const posts = data.posts || [];
@@ -244,6 +247,7 @@
       });
     }
 
+    loadCounter();
     loadCodes();
     loadReddit();
     setInterval(loadCodes, 2 * 60 * 1000);

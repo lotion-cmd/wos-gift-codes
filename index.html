@@ -25,6 +25,9 @@
     .title em { color: var(--gold); font-style: normal; }
     .meta { text-align: center; margin-bottom: 10px; font-size: .68rem; color: var(--muted); }
     .meta span { color: var(--ice); }
+    .notify-btn { display: block; margin: 0 auto 16px; background: rgba(56,189,248,.08); border: 1px solid rgba(56,189,248,.25); color: var(--frost); font-family: 'Noto Sans JP', sans-serif; font-size: .76rem; padding: 7px 18px; border-radius: 5px; cursor: pointer; transition: all .2s; }
+    .notify-btn:hover { background: rgba(56,189,248,.16); }
+    .notify-btn.granted { background: rgba(74,222,128,.1); border-color: rgba(74,222,128,.3); color: var(--green); cursor: default; }
     .redeem { text-align: center; margin-bottom: 28px; }
     .redeem a { display: inline-flex; align-items: center; gap: 6px; background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.3); color: var(--gold); font-size: .76rem; padding: 7px 18px; border-radius: 5px; text-decoration: none; transition: all .2s; }
     .redeem a:hover { background: rgba(251,191,36,.18); }
@@ -73,6 +76,7 @@
       <h1 class="title">GIFT <em>CODE</em> TRACKER</h1>
     </header>
     <p class="meta">最終更新: <span id="updated">-</span></p>
+    <button class="notify-btn" id="notify-btn" onclick="requestNotify()">🔔 新コード通知をオンにする</button>
     <div class="redeem">
       <a href="https://wos-giftcode.centurygame.com" target="_blank" rel="noopener noreferrer">🎁 コード交換所を開く</a>
     </div>
@@ -114,12 +118,60 @@
       return `${Math.floor(diff/86400)}日前`;
     }
 
+    // 通知許可
+    const notifyBtn = document.getElementById('notify-btn');
+    function updateNotifyBtn() {
+      if (!('Notification' in window)) {
+        notifyBtn.textContent = '🔔 通知非対応ブラウザです';
+        notifyBtn.disabled = true;
+        return;
+      }
+      if (Notification.permission === 'granted') {
+        notifyBtn.textContent = '✅ 新コード通知オン';
+        notifyBtn.classList.add('granted');
+      } else if (Notification.permission === 'denied') {
+        notifyBtn.textContent = '🔕 通知がブロックされています';
+        notifyBtn.disabled = true;
+      }
+    }
+    updateNotifyBtn();
+
+    async function requestNotify() {
+      if (!('Notification' in window)) return;
+      const perm = await Notification.requestPermission();
+      updateNotifyBtn();
+    }
+
+    function sendNotify(newCodes) {
+      if (Notification.permission !== 'granted') return;
+      for (const code of newCodes) {
+        new Notification('🎁 新しいギフトコード！', {
+          body: `${code.code}\n${code.rewards || ''}`,
+          icon: 'https://lotion-cmd.github.io/wos-gift-codes/favicon.ico',
+        });
+      }
+    }
+
+    // コード監視（前回のコード一覧を保持して差分を検出）
+    let prevCodes = null;
+
     async function loadCodes() {
       try {
         const res = await fetch('codes.json?t=' + Date.now());
         const data = await res.json();
         document.getElementById('updated').textContent = data.updated || '-';
         const codes = (data.codes || []).filter(c => !c.deadline || new Date(c.deadline).getTime() > Date.now());
+
+        // 新コード検出
+        if (prevCodes !== null) {
+          const prevKeys = new Set(prevCodes.map(c => c.code));
+          const newCodes = codes.filter(c => !prevKeys.has(c.code));
+          if (newCodes.length > 0) {
+            sendNotify(newCodes);
+          }
+        }
+        prevCodes = codes;
+
         document.getElementById('count').innerHTML = `現在 <strong>${codes.length}件</strong> のアクティブコード`;
         document.getElementById('grid').innerHTML = codes.length === 0
           ? '<p class="empty">🧊 現在有効なコードはありません</p>'
@@ -150,12 +202,10 @@
         if (!res.ok) throw new Error('fetch failed');
         const data = await res.json();
         const posts = data.posts || [];
-
         if (posts.length === 0) {
           el.innerHTML = '<p class="empty">現在、新着のReddit投稿はありません</p>';
           return;
         }
-
         el.innerHTML = posts.map((p, i) => `
           <div class="reddit-card" style="animation-delay:${i*0.05}s">
             <div class="reddit-title">${p.title}</div>
@@ -177,8 +227,13 @@
       });
     }
 
+    // 初回読み込み
     loadCodes();
     loadReddit();
+
+    // 2分ごとに自動チェック（新コード検出のため）
+    setInterval(loadCodes, 2 * 60 * 1000);
+    setInterval(loadReddit, 5 * 60 * 1000);
   </script>
 </body>
 </html>

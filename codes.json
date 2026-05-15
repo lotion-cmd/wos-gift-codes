@@ -1,13 +1,12 @@
 {
-  "updated": "2026-05-16 02:00 JST",
+  "updated": "2026-05-16 02:02 JST",
   "codes": [
     {
       "code": "WOSFAMILY26",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-05-15T21:30:53+09:00"
+      "verified": true
     },
     {
       "code": "gogoWOS",

@@ -14,12 +14,22 @@
       --amber: #fb923c; --text: #dde8f4; --muted: #4a6880;
       --red: #f87171;
     }
-    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; overflow-x: hidden; }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; overflow-x: hidden; position: relative; }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url("https://i.imgur.com/GWV9XX4.jpg");
+      background-size: cover;
+      background-position: center;
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 0;
+    }
     .snow { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
     .flake { position: absolute; top: -16px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e0f2fe, #7dd3fc33); animation: fall linear infinite; }
     @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-
-    /* プルトゥリフレッシュ インジケーター */
     .ptr-indicator {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: center;
@@ -36,7 +46,6 @@
     }
     .ptr-spinner.spin { animation: spin .7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .app { position: relative; z-index: 1; min-height: 100vh; background: radial-gradient(ellipse at 50% -6%, rgba(56,189,248,.1) 0%, transparent 50%); }
     .header { text-align: center; padding: 48px 20px 20px; }
     .header::after { content: ''; display: block; width: 160px; height: 1px; background: linear-gradient(90deg, transparent, var(--frost), transparent); margin: 16px auto 0; }
@@ -163,7 +172,6 @@
   <script>
     const PROXY = 'https://wos-reddit-proxy.adrian-j-slywotzky.workers.dev';
 
-    // Snow
     const snow = document.getElementById('snow');
     for (let i = 0; i < 22; i++) {
       const f = document.createElement('div');
@@ -173,7 +181,6 @@
       snow.appendChild(f);
     }
 
-    // プルトゥリフレッシュ
     let startY = 0;
     let pulling = false;
     const ptr = document.getElementById('ptr');
@@ -181,10 +188,7 @@
     const ptrText = document.getElementById('ptr-text');
 
     document.addEventListener('touchstart', e => {
-      if (window.scrollY === 0) {
-        startY = e.touches[0].clientY;
-        pulling = true;
-      }
+      if (window.scrollY === 0) { startY = e.touches[0].clientY; pulling = true; }
     }, { passive: true });
 
     document.addEventListener('touchmove', e => {
@@ -209,13 +213,11 @@
       }
     });
 
-    // アクセスカウンター
     async function loadCounter() {
       try {
         const res = await fetch(`${PROXY}/count`);
         const data = await res.json();
-        document.getElementById('counter').textContent =
-          data.count.toLocaleString('ja-JP') + ' アクセス';
+        document.getElementById('counter').textContent = data.count.toLocaleString('ja-JP') + ' アクセス';
       } catch(e) {
         document.getElementById('counter').textContent = '';
       }
@@ -236,18 +238,9 @@
 
     const notifyBtn = document.getElementById('notify-btn');
     function updateNotifyBtn() {
-      if (!('Notification' in window)) {
-        notifyBtn.textContent = '通知非対応のブラウザです';
-        notifyBtn.disabled = true;
-        return;
-      }
-      if (Notification.permission === 'granted') {
-        notifyBtn.textContent = '✅ 新コード通知オン';
-        notifyBtn.classList.add('granted');
-      } else if (Notification.permission === 'denied') {
-        notifyBtn.textContent = '🔕 通知がブロックされています';
-        notifyBtn.disabled = true;
-      }
+      if (!('Notification' in window)) { notifyBtn.textContent = '通知非対応のブラウザです'; notifyBtn.disabled = true; return; }
+      if (Notification.permission === 'granted') { notifyBtn.textContent = '✅ 新コード通知オン'; notifyBtn.classList.add('granted'); }
+      else if (Notification.permission === 'denied') { notifyBtn.textContent = '🔕 通知がブロックされています'; notifyBtn.disabled = true; }
     }
     updateNotifyBtn();
 
@@ -260,9 +253,7 @@
     function sendNotify(newCodes) {
       if (Notification.permission !== 'granted') return;
       for (const code of newCodes) {
-        new Notification('🎁 新しいギフトコード！', {
-          body: `${code.code}\n${code.rewards || ''}`,
-        });
+        new Notification('🎁 新しいギフトコード！', { body: `${code.code}\n${code.rewards || ''}` });
       }
     }
 
@@ -273,17 +264,14 @@
         const res = await fetch('codes.json?t=' + Date.now());
         const data = await res.json();
         document.getElementById('updated').textContent = data.updated || '-';
-        const codes = (data.codes || []).filter(c =>
-          !c.deadline || new Date(c.deadline).getTime() > Date.now()
-        );
+        const codes = (data.codes || []).filter(c => !c.deadline || new Date(c.deadline).getTime() > Date.now());
         if (prevCodes !== null) {
           const prevKeys = new Set(prevCodes.map(c => c.code));
           const newCodes = codes.filter(c => !prevKeys.has(c.code));
           if (newCodes.length > 0) sendNotify(newCodes);
         }
         prevCodes = codes;
-        document.getElementById('count').innerHTML =
-          `現在 <strong>${codes.length}件</strong> のアクティブコード`;
+        document.getElementById('count').innerHTML = `現在 <strong>${codes.length}件</strong> のアクティブコード`;
         document.getElementById('grid').innerHTML = codes.length === 0
           ? '<p class="empty">🧊 現在有効なコードはありません</p>'
           : codes.map((c, i) => `
@@ -299,8 +287,7 @@
               </div>
             </div>`).join('');
       } catch(e) {
-        document.getElementById('grid').innerHTML =
-          '<p class="empty">データを読み込めませんでした</p>';
+        document.getElementById('grid').innerHTML = '<p class="empty">データを読み込めませんでした</p>';
       }
     }
 
@@ -311,10 +298,7 @@
         if (!res.ok) throw new Error('fetch failed');
         const data = await res.json();
         const posts = data.posts || [];
-        if (posts.length === 0) {
-          el.innerHTML = '<p class="empty">現在、新着のReddit投稿はありません</p>';
-          return;
-        }
+        if (posts.length === 0) { el.innerHTML = '<p class="empty">現在、新着のReddit投稿はありません</p>'; return; }
         el.innerHTML = posts.map((p, i) => `
           <div class="reddit-card" style="animation-delay:${i*0.05}s">
             <div class="reddit-title">${p.title}</div>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WOS Gift Code Tracker</title>
+  <link rel="manifest" href="manifest.json" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,36 +15,13 @@
       --amber: #fb923c; --text: #dde8f4; --muted: #4a6880;
       --red: #f87171;
     }
-    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; overflow-x: hidden; position: relative; }
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-image: url("https://i.imgur.com/GWV9XX4.jpg");
-      background-size: cover;
-      background-position: center;
-      opacity: 0.04;
-      pointer-events: none;
-      z-index: 0;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; overflow-x: hidden; }
     .snow { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
     .flake { position: absolute; top: -16px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e0f2fe, #7dd3fc33); animation: fall linear infinite; }
     @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-    .ptr-indicator {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: center;
-      height: 0; overflow: hidden;
-      background: rgba(4, 8, 15, 0.9);
-      transition: height 0.2s ease;
-      font-size: .75rem; color: var(--frost);
-      gap: 8px;
-    }
+    .ptr-indicator { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: center; height: 0; overflow: hidden; background: rgba(4,8,15,0.9); transition: height 0.2s ease; font-size: .75rem; color: var(--frost); gap: 8px; }
     .ptr-indicator.visible { height: 56px; }
-    .ptr-spinner {
-      width: 18px; height: 18px; border: 2px solid rgba(56,189,248,.2);
-      border-top-color: var(--frost); border-radius: 50%;
-    }
+    .ptr-spinner { width: 18px; height: 18px; border: 2px solid rgba(56,189,248,.2); border-top-color: var(--frost); border-radius: 50%; }
     .ptr-spinner.spin { animation: spin .7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .app { position: relative; z-index: 1; min-height: 100vh; background: radial-gradient(ellipse at 50% -6%, rgba(56,189,248,.1) 0%, transparent 50%); }
@@ -115,7 +93,6 @@
     <div class="ptr-spinner" id="ptr-spinner"></div>
     <span id="ptr-text">引っ張って更新</span>
   </div>
-
   <div class="snow" id="snow"></div>
   <div class="app">
     <header class="header">
@@ -127,7 +104,6 @@
     <div class="redeem">
       <a href="https://wos-giftcode.centurygame.com" target="_blank" rel="noopener noreferrer">🎁 コード交換所を開く</a>
     </div>
-
     <main class="main">
       <div class="section-head">
         <h2>✅ 確認済みアクティブコード</h2>
@@ -149,9 +125,7 @@
             <li>上のボタンをタップして通知を許可する</li>
           </ol>
           <ul class="caution">
-            <li>ホーム画面に追加したアイコンから開き、アプリを閉じずにバックグラウンドにしている間は通知されます</li>
-            <li>アプリを完全に閉じると通知されません</li>
-            <li>新コード追加から約2分以内にお知らせします</li>
+            <li>アプリを完全に閉じた状態でも通知が届きます（Web Push通知）</li>
             <li>iPhoneおよびiPadのSafariのみ対応しています</li>
             <li>ホーム画面からではなくSafariのタブから開いた場合は通知されません</li>
           </ul>
@@ -171,7 +145,9 @@
 
   <script>
     const PROXY = 'https://wos-reddit-proxy.adrian-j-slywotzky.workers.dev';
+    const VAPID_PUBLIC_KEY = 'BDiQqrMWU2MVmhmkwHUzvstzAC9AamwuxV2NVTUlgJTYld_xpz1ziINJ1VIC4jYejuQJZlnr3CGqYe-JODXJ8YE';
 
+    // Snow
     const snow = document.getElementById('snow');
     for (let i = 0; i < 22; i++) {
       const f = document.createElement('div');
@@ -181,25 +157,19 @@
       snow.appendChild(f);
     }
 
-    let startY = 0;
-    let pulling = false;
+    // プルトゥリフレッシュ
+    let startY = 0, pulling = false;
     const ptr = document.getElementById('ptr');
     const ptrSpinner = document.getElementById('ptr-spinner');
     const ptrText = document.getElementById('ptr-text');
-
     document.addEventListener('touchstart', e => {
       if (window.scrollY === 0) { startY = e.touches[0].clientY; pulling = true; }
     }, { passive: true });
-
     document.addEventListener('touchmove', e => {
       if (!pulling) return;
       const dy = e.touches[0].clientY - startY;
-      if (dy > 10) {
-        ptr.classList.add('visible');
-        ptrText.textContent = dy > 60 ? '離して更新' : '引っ張って更新';
-      }
+      if (dy > 10) { ptr.classList.add('visible'); ptrText.textContent = dy > 60 ? '離して更新' : '引っ張って更新'; }
     }, { passive: true });
-
     document.addEventListener('touchend', e => {
       if (!pulling) return;
       pulling = false;
@@ -213,6 +183,7 @@
       }
     });
 
+    // アクセスカウンター
     async function loadCounter() {
       try {
         const res = await fetch(`${PROXY}/count`);
@@ -236,41 +207,73 @@
       return (Date.now() - new Date(addedAt).getTime()) < 48 * 60 * 60 * 1000;
     }
 
+    // VAPID公開鍵をUint8Arrayに変換
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+      const rawData = atob(base64);
+      return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+    }
+
+    // Service Worker + Web Push登録
     const notifyBtn = document.getElementById('notify-btn');
-    function updateNotifyBtn() {
-      if (!('Notification' in window)) { notifyBtn.textContent = '通知非対応のブラウザです'; notifyBtn.disabled = true; return; }
-      if (Notification.permission === 'granted') { notifyBtn.textContent = '✅ 新コード通知オン'; notifyBtn.classList.add('granted'); }
-      else if (Notification.permission === 'denied') { notifyBtn.textContent = '🔕 通知がブロックされています'; notifyBtn.disabled = true; }
-    }
-    updateNotifyBtn();
+    let swRegistration = null;
 
-    async function requestNotify() {
-      if (!('Notification' in window)) return;
-      await Notification.requestPermission();
-      updateNotifyBtn();
-    }
-
-    function sendNotify(newCodes) {
-      if (Notification.permission !== 'granted') return;
-      for (const code of newCodes) {
-        new Notification('🎁 新しいギフトコード！', { body: `${code.code}\n${code.rewards || ''}` });
+    async function initServiceWorker() {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        notifyBtn.textContent = '通知非対応のブラウザです';
+        notifyBtn.disabled = true;
+        return;
+      }
+      try {
+        swRegistration = await navigator.serviceWorker.register('/wos-gift-codes/sw.js');
+        console.log('SW registered');
+        const sub = await swRegistration.pushManager.getSubscription();
+        if (sub) {
+          notifyBtn.textContent = '✅ 新コード通知オン（バックグラウンド対応）';
+          notifyBtn.classList.add('granted');
+        }
+      } catch(e) {
+        console.error('SW registration failed:', e);
       }
     }
 
-    let prevCodes = null;
+    async function requestNotify() {
+      if (!swRegistration) return;
+      try {
+        const perm = await Notification.requestPermission();
+        if (perm !== 'granted') {
+          notifyBtn.textContent = '🔕 通知がブロックされています';
+          notifyBtn.disabled = true;
+          return;
+        }
+        const sub = await swRegistration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+        });
+        // 購読情報をサーバーに保存
+        await fetch(`${PROXY}/subscribe`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sub),
+        });
+        notifyBtn.textContent = '✅ 新コード通知オン（バックグラウンド対応）';
+        notifyBtn.classList.add('granted');
+        console.log('Push subscription saved');
+      } catch(e) {
+        console.error('Push subscription failed:', e);
+        notifyBtn.textContent = '通知の設定に失敗しました';
+      }
+    }
 
     async function loadCodes() {
       try {
         const res = await fetch('codes.json?t=' + Date.now());
         const data = await res.json();
         document.getElementById('updated').textContent = data.updated || '-';
-        const codes = (data.codes || []).filter(c => !c.deadline || new Date(c.deadline).getTime() > Date.now());
-        if (prevCodes !== null) {
-          const prevKeys = new Set(prevCodes.map(c => c.code));
-          const newCodes = codes.filter(c => !prevKeys.has(c.code));
-          if (newCodes.length > 0) sendNotify(newCodes);
-        }
-        prevCodes = codes;
+        const codes = (data.codes || []).filter(c =>
+          !c.deadline || new Date(c.deadline).getTime() > Date.now()
+        );
         document.getElementById('count').innerHTML = `現在 <strong>${codes.length}件</strong> のアクティブコード`;
         document.getElementById('grid').innerHTML = codes.length === 0
           ? '<p class="empty">🧊 現在有効なコードはありません</p>'
@@ -298,7 +301,10 @@
         if (!res.ok) throw new Error('fetch failed');
         const data = await res.json();
         const posts = data.posts || [];
-        if (posts.length === 0) { el.innerHTML = '<p class="empty">現在、新着のReddit投稿はありません</p>'; return; }
+        if (posts.length === 0) {
+          el.innerHTML = '<p class="empty">現在、新着のReddit投稿はありません</p>';
+          return;
+        }
         el.innerHTML = posts.map((p, i) => `
           <div class="reddit-card" style="animation-delay:${i*0.05}s">
             <div class="reddit-title">${p.title}</div>
@@ -320,10 +326,11 @@
       });
     }
 
+    initServiceWorker();
     loadCounter();
     loadCodes();
     loadReddit();
-    setInterval(loadCodes, 2 * 60 * 1000);
+    setInterval(loadCodes, 30 * 1000);
     setInterval(loadReddit, 5 * 60 * 1000);
   </script>
 </body>

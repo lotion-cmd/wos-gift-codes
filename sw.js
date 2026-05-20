@@ -1,7 +1,14 @@
 self.addEventListener('push', event => {
+  let title = '🎁 新しいギフトコード！';
+  let body = '新しいコードが追加されました。サイトを確認してください。';
+  try {
+    const data = event.data.json();
+    if (data.title) title = data.title;
+    if (data.body) body = data.body;
+  } catch(e) {}
   event.waitUntil(
-    self.registration.showNotification('🎁 新しいギフトコード！', {
-      body: '新しいコードが追加されました。サイトを確認してください。',
+    self.registration.showNotification(title, {
+      body,
       icon: '/wos-gift-codes/icon-192.png',
     })
   );

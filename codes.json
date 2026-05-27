@@ -1,13 +1,12 @@
 {
-  "updated": "2026-05-27 21:30 JST",
+  "updated": "2026-05-27 21:36 JST",
   "codes": [
     {
       "code": "EidMubarak",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-05-27T21:30:00+09:00"
+      "verified": true
     },
     {
       "code": "gogoWOS",

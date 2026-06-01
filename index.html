@@ -207,7 +207,6 @@
       return (Date.now() - new Date(addedAt).getTime()) < 48 * 60 * 60 * 1000;
     }
 
-    // VAPID公開鍵をUint8Arrayに変換
     function urlBase64ToUint8Array(base64String) {
       const padding = '='.repeat((4 - base64String.length % 4) % 4);
       const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
@@ -215,7 +214,6 @@
       return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
     }
 
-    // Service Worker + Web Push登録
     const notifyBtn = document.getElementById('notify-btn');
     let swRegistration = null;
 
@@ -251,7 +249,6 @@
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
         });
-        // 購読情報をサーバーに保存
         await fetch(`${PROXY}/subscribe`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -290,7 +287,7 @@
               </div>
             </div>`).join('');
       } catch(e) {
-        document.getElementById('grid').innerHTML = '<p class="empty">データを読み込めませんでした</p>';
+        document.getElementById('grid').innerHTML = '<p class="empty">エラー: ' + e.message + '</p>';
       }
     }
 

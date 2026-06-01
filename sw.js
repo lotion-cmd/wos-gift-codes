@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v2';
+const CACHE_NAME = 'wos-cache-v3';
 
 self.addEventListener('install', event => {
   self.skipWaiting();
@@ -10,6 +10,10 @@ self.addEventListener('activate', event => {
       Promise.all(keys.map(key => caches.delete(key)))
     ).then(() => self.clients.claim())
   );
+});
+
+self.addEventListener('fetch', event => {
+  return;
 });
 
 self.addEventListener('push', event => {

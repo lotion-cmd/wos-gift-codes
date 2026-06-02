@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-02 21:30 JST",
+  "updated": "2026-06-02 21:59 JST",
   "codes": [
     {
       "code": "gogoWOS",
@@ -13,8 +13,7 @@
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-06-02T11:00:00+09:00"
+      "verified": true
     }
   ]
 }

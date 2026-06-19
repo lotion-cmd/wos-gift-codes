@@ -1,6 +1,14 @@
 {
-  "updated": "2026-06-19 21:03 JST",
+  "updated": "2026-06-20 00:30 JST",
   "codes": [
+    {
+      "code": "1stYoutubeKR",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-06-20T00:30:00+09:00"
+    },
     {
       "code": "WOS0617",
       "rewards": "報酬情報を確認してください",

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-27 02:14 JST",
+  "updated": "2026-06-27 02:30 JST",
   "codes": [
     {
       "code": "GreatDad26",
@@ -7,6 +7,14 @@
       "deadline": null,
       "note": null,
       "verified": true
+    },
+    {
+      "code": "1stYoutubeKR",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-06-27T02:30:00+09:00"
     },
     {
       "code": "gogoWOS",

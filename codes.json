@@ -1,21 +1,12 @@
 {
-  "updated": "2026-06-30 21:30 JST",
+  "updated": "2026-06-30 22:21 JST",
   "codes": [
     {
       "code": "SocialMediaDay",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-06-30T21:30:00+09:00"
-    },
-    {
-      "code": "1stYoutubeKR",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-06-30T20:30:00+09:00"
+      "verified": true
     },
     {
       "code": "gogoWOS",

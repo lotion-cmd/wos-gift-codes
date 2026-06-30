@@ -1,6 +1,14 @@
 {
-  "updated": "2026-06-30 17:05 JST",
+  "updated": "2026-06-30 17:30 JST",
   "codes": [
+    {
+      "code": "1stYoutubeKR",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-06-30T17:30:00+09:00"
+    },
     {
       "code": "gogoWOS",
       "rewards": "ジェム×500、ヒーローXP×10K、ゴールドキー×2、汎用加速(5m)×20",

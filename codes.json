@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-04 23:25 JST",
+  "updated": "2026-07-04 23:30 JST",
   "codes": [
     {
       "code": "HappyJuly26",
@@ -16,11 +16,27 @@
       "verified": true
     },
     {
+      "code": "0706FORU",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-07-04T23:30:00+09:00"
+    },
+    {
       "code": "SocialMediaDay",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
       "verified": true
+    },
+    {
+      "code": "1stYoutubeKR",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-07-04T23:30:00+09:00"
     },
     {
       "code": "gogoWOS",

@@ -1,6 +1,14 @@
 {
-  "updated": "2026-07-04 20:30 JST",
+  "updated": "2026-07-04 21:30 JST",
   "codes": [
+    {
+      "code": "HappyJuly26",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-07-04T21:30:00+09:00"
+    },
     {
       "code": "WOS0706",
       "rewards": "報酬情報を確認してください",

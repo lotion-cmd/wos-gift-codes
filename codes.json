@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-15 16:30 JST",
+  "updated": "2026-07-15 18:28 JST",
   "codes": [
     {
       "code": "WOS0715",
@@ -9,28 +9,11 @@
       "verified": true
     },
     {
-      "code": "OFFICIALSTORE0709",
+      "code": "OFFICIALSTORE07",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-07-15T16:30:00+09:00"
-    },
-    {
-      "code": "2ndYoutubeKR",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-07-15T16:30:00+09:00"
-    },
-    {
-      "code": "1stYoutubeKR",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-07-15T16:30:00+09:00"
+      "verified": true
     },
     {
       "code": "gogoWOS",

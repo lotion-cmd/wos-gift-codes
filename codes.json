@@ -1,37 +1,12 @@
 {
-  "updated": "2026-07-20 19:30 JST",
+  "updated": "2026-07-20 20:20 JST",
   "codes": [
     {
       "code": "JULHD2026JP",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-07-20T19:30:00+09:00"
-    },
-    {
-      "code": "4PWagqPw4",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-07-20T17:30:00+09:00"
-    },
-    {
-      "code": "2ndYoutubeKR",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-07-20T17:30:00+09:00"
-    },
-    {
-      "code": "1stYoutubeKR",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-07-20T17:30:00+09:00"
+      "verified": true
     },
     {
       "code": "gogoWOS",

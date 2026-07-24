@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-24 22:27 JST",
+  "updated": "2026-07-25 00:12 JST",
   "codes": [
     {
       "code": "HappyJuly26",
@@ -24,6 +24,13 @@
     },
     {
       "code": "JULHD2026JP",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": false
+    },
+    {
+      "code": "OFFICIALSTORE",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,

@@ -1,41 +1,44 @@
 {
-  "updated": "2026-08-02 21:00 JST",
+  "updated": "2026-08-02 22:11 JST",
   "codes": [
     {
-      "code": "WOS0804",
+      "code": "HappyJuly26",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-08-02T21:00:00+09:00"
+      "verified": false
     },
     {
-      "code": "47ar5vzKz",
+      "code": "GreatDad26",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-08-02T21:00:00+09:00"
-    },
-    {
-      "code": "2ndYoutubeKR",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-08-02T21:00:00+09:00"
-    },
-    {
-      "code": "1stYoutubeKR",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-08-02T21:00:00+09:00"
+      "verified": false
     },
     {
       "code": "gogoWOS",
       "rewards": "ジェム×500、ヒーローXP×10K、ゴールドキー×2、汎用加速(5m)×20",
+      "deadline": null,
+      "note": null,
+      "verified": false
+    },
+    {
+      "code": "JULHD2026JP",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": false
+    },
+    {
+      "code": "FB4Million",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": false
+    },
+    {
+      "code": "OFFICIALSTORE",
+      "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
       "verified": false

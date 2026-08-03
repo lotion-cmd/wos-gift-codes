@@ -1,29 +1,56 @@
 {
-  "updated": "2026-08-04 05:42 JST",
+  "updated": "2026-08-04 06:00 JST",
   "codes": [
     {
-      "code": "HappyJuly26",
+      "code": "WOS0803",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": false
+      "verified": true,
+      "addedAt": "2026-08-04T06:00:00+09:00"
+    },
+    {
+      "code": "0803FORU",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-08-04T06:00:00+09:00"
+    },
+    {
+      "code": "WOS0804",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-08-04T06:00:00+09:00"
+    },
+    {
+      "code": "47ar5vzKz",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-08-04T06:00:00+09:00"
+    },
+    {
+      "code": "2ndYoutubeKR",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-08-04T06:00:00+09:00"
+    },
+    {
+      "code": "1stYoutubeKR",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-08-04T06:00:00+09:00"
     },
     {
       "code": "gogoWOS",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": false
-    },
-    {
-      "code": "GreatDad26",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": false
-    },
-    {
-      "code": "OFFICIALSTORE",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,

@@ -1,6 +1,13 @@
 {
-  "updated": "2026-08-25 10:30 JST",
+  "updated": "2026-08-25 11:36 JST",
   "codes": [
+    {
+      "code": "gogoWOS",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": false
+    },
     {
       "code": "GuDokYTKOR",
       "rewards": "報酬情報を確認してください",
@@ -9,23 +16,21 @@
       "verified": false
     },
     {
-      "code": "2ndYoutubeKR",
+      "code": "wm6B7MM4u",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-08-25T10:30:00+09:00"
+      "verified": false
     },
     {
-      "code": "1stYoutubeKR",
+      "code": "HappyJuly26",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-08-25T10:30:00+09:00"
+      "verified": false
     },
     {
-      "code": "gogoWOS",
+      "code": "OFFICIALSTORE",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,

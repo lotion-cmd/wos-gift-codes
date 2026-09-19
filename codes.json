@@ -1,6 +1,14 @@
 {
-  "updated": "2026-09-19 10:30 JST",
+  "updated": "2026-09-19 11:00 JST",
   "codes": [
+    {
+      "code": "WOS0919",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-09-19T11:00:00+09:00"
+    },
     {
       "code": "K5aM8vzKq",
       "rewards": "報酬情報を確認してください",

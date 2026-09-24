@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-24 09:00 JST",
+  "updated": "2026-09-24 09:30 JST",
   "codes": [
     {
       "code": "FallEquinox26",
@@ -8,13 +8,6 @@
       "note": null,
       "verified": true,
       "addedAt": "2026-09-24T09:00:00+09:00"
-    },
-    {
-      "code": "JPsilverweek26",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": false
     },
     {
       "code": "GuDokYTKOR",

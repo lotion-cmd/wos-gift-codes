@@ -1,6 +1,14 @@
 {
-  "updated": "2026-10-05 18:30 JST",
+  "updated": "2026-10-05 21:01 JST",
   "codes": [
+    {
+      "code": "THXTeacher",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-10-05T21:01:00+09:00"
+    },
     {
       "code": "GuDokYTKOR",
       "rewards": "報酬情報を確認してください",

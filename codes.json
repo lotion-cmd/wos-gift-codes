@@ -1,6 +1,14 @@
 {
-  "updated": "2026-10-12 18:00 JST",
+  "updated": "2026-10-12 18:30 JST",
   "codes": [
+    {
+      "code": "SPORTSDAY26",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-10-12T18:30:00+09:00"
+    },
     {
       "code": "INS400K",
       "rewards": "報酬情報を確認してください",

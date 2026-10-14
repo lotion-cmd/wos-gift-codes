@@ -1,13 +1,19 @@
 {
-  "updated": "2026-10-14 09:00 JST",
+  "updated": "2026-10-14 09:26 JST",
   "codes": [
     {
-      "code": "SPORTSDAY26",
+      "code": "gogoWOS",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-10-14T06:30:00+09:00"
+      "verified": false
+    },
+    {
+      "code": "K6ZbjAXK6",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": false
     },
     {
       "code": "GuDokYTKOR",
@@ -17,15 +23,21 @@
       "verified": false
     },
     {
-      "code": "2ndYoutubeKR",
+      "code": "INS400K",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-10-14T06:30:00+09:00"
+      "verified": false
     },
     {
-      "code": "gogoWOS",
+      "code": "THXTeacher",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": false
+    },
+    {
+      "code": "OFFICIALSTORE",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,

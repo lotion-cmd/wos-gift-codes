@@ -1,20 +1,6 @@
 {
-  "updated": "2026-10-18 08:17 JST",
+  "updated": "2026-10-18 08:30 JST",
   "codes": [
-    {
-      "code": "gogoWOS",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": false
-    },
-    {
-      "code": "K6ZbjAXK6",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": false
-    },
     {
       "code": "GuDokYTKOR",
       "rewards": "報酬情報を確認してください",
@@ -23,14 +9,15 @@
       "verified": false
     },
     {
-      "code": "THXTeacher",
+      "code": "2ndYoutubeKR",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": false
+      "verified": true,
+      "addedAt": "2026-10-18T08:30:00+09:00"
     },
     {
-      "code": "OFFICIALSTORE",
+      "code": "gogoWOS",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,

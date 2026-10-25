@@ -1,6 +1,14 @@
 {
-  "updated": "2026-10-25 13:00 JST",
+  "updated": "2026-10-25 14:30 JST",
   "codes": [
+    {
+      "code": "WOS1025",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-10-25T14:30:00+09:00"
+    },
     {
       "code": "GuDokYTKOR",
       "rewards": "報酬情報を確認してください",

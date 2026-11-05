@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05 07:00 JST",
+  "updated": "2026-11-05 09:30 JST",
   "codes": [
     {
       "code": "WOS1104",
@@ -8,13 +8,6 @@
       "note": null,
       "verified": true,
       "addedAt": "2026-11-05T07:00:00+09:00"
-    },
-    {
-      "code": "SpookySeason26",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": false
     },
     {
       "code": "GuDokYTKOR",

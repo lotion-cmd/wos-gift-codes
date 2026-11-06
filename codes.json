@@ -1,13 +1,12 @@
 {
-  "updated": "2026-11-06 21:00 JST",
+  "updated": "2026-11-07 03:48 JST",
   "codes": [
     {
-      "code": "WOS1104",
+      "code": "gogoWOS",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-11-06T21:00:00+09:00"
+      "verified": false
     },
     {
       "code": "GuDokYTKOR",
@@ -17,7 +16,21 @@
       "verified": false
     },
     {
-      "code": "gogoWOS",
+      "code": "SpookySeason26",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": false
+    },
+    {
+      "code": "K6ZbjAXK6",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": false
+    },
+    {
+      "code": "OFFICIALSTORE",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,

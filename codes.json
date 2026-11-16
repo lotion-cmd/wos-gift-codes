@@ -1,13 +1,12 @@
 {
-  "updated": "2026-11-16 22:30 JST",
+  "updated": "2026-11-17 03:45 JST",
   "codes": [
     {
-      "code": "VAX5g254j",
+      "code": "gogoWOS",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-11-16T22:30:00+09:00"
+      "verified": false
     },
     {
       "code": "GuDokYTKOR",
@@ -17,7 +16,7 @@
       "verified": false
     },
     {
-      "code": "gogoWOS",
+      "code": "OFFICIALSTORE",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,

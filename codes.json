@@ -1,6 +1,14 @@
 {
-  "updated": "2026-11-23 18:30 JST",
+  "updated": "2026-11-23 19:00 JST",
   "codes": [
+    {
+      "code": "WOS27TGS",
+      "rewards": "報酬情報を確認してください",
+      "deadline": null,
+      "note": null,
+      "verified": true,
+      "addedAt": "2026-11-23T19:00:00+09:00"
+    },
     {
       "code": "WORKERSTHANKS",
       "rewards": "報酬情報を確認してください",

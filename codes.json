@@ -1,37 +1,12 @@
 {
-  "updated": "2026-11-24 15:30 JST",
+  "updated": "2026-11-25 03:03 JST",
   "codes": [
     {
-      "code": "OFFICIALSTORE1124",
+      "code": "gogoWOS",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
-      "verified": true,
-      "addedAt": "2026-11-24T15:30:00+09:00"
-    },
-    {
-      "code": "WOS27TGS",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-11-24T15:30:00+09:00"
-    },
-    {
-      "code": "WORKERSTHANKS",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-11-24T15:30:00+09:00"
-    },
-    {
-      "code": "A7K9M2",
-      "rewards": "報酬情報を確認してください",
-      "deadline": null,
-      "note": null,
-      "verified": true,
-      "addedAt": "2026-11-24T15:30:00+09:00"
+      "verified": false
     },
     {
       "code": "GuDokYTKOR",
@@ -41,7 +16,7 @@
       "verified": false
     },
     {
-      "code": "gogoWOS",
+      "code": "OFFICIALSTORE",
       "rewards": "報酬情報を確認してください",
       "deadline": null,
       "note": null,
